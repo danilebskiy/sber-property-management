@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: classpath:db.changelog/changes/001-create-tasks-tables.yaml
+  - include:
+      file: classpath:db.changelog/changes/002-add-task-indexec.yaml

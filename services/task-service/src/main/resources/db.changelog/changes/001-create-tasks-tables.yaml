@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-tasks-table
+      author: admin
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_tasks
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(1000)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: status
+                  type: VARCHAR(255)
+                  defaultValue: 'NEW'
+              - column:
+                  constraints:
+                    nullable: false
+                  name: priority
+                  type: VARCHAR(255)
+                  defaultValue: 'MEDIUM'
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: due_date
+                  type: DATETIME
+              - column:
+                  name: completion_date
+                  type: DATETIME
+              - column:
+                  name: assignee_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: creator_id
+                  type: BIGINT
+              - column:
+                  name: property_id
+                  type: BIGINT
+              - column:
+                  name: asset_id
+                  type: BIGINT
+              - column:
+                  name: escalation_level
+                  type: INT
+              - column:
+                  name: escalated_to
+                  type: BIGINT
+              - column:
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+            tableName: tasks
+

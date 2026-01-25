@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-add-task-indexec
+      author: admin
+      changes:
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_status
+            columns:
+              - column:
+                  name: status
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_priority
+            columns:
+              - column:
+                  name: priority
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_created_at
+            columns:
+              - column:
+                  name: created_at
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_due_date
+            columns:
+              - column:
+                  name: due_date
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_assignee_id
+            columns:
+              - column:
+                  name: assignee_id
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_creator_id
+            columns:
+              - column:
+                  name: creator_id
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_property_id
+            columns:
+              - column:
+                  name: property_id
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_asset_id
+            columns:
+              - column:
+                  name: asset_id
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_status_priority
+            columns:
+              - column:
+                  name: status
+              - column:
+                  name: priority
+        - createIndex:
+            tableName: tasks
+            indexName: idx_tasks_assignee_status
+            columns:
+              - column:
+                  name: assignee_id
+              - column:
+                  name: status

@@ -1,0 +1,32 @@
+pipeline{
+    agent any
+
+    stages{
+        stage('Hello') {
+            steps{
+                echo 'Hello from Jenkins!'
+                sh 'ls -la'
+                sh 'pwd'
+            }
+        }
+
+        stage('Check Java & Maven') {
+            steps{
+                sh 'java --version'
+                sh 'mvn --version || echo "Maven not installed"'
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                sh 'mvn clean compile || echo "Build failed"'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Job completed'
+        }
+    }
+}
