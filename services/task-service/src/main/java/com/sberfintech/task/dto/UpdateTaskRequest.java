@@ -1,11 +1,14 @@
 package com.sberfintech.task.dto;
 
+import com.sberfintech.task.model.TaskPriority;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @Schema(description = "Запрос на оьновление задачи")
 public class UpdateTaskRequest {
 
@@ -25,7 +28,7 @@ public class UpdateTaskRequest {
     private Long assetId;
 
     @Schema(description = "Приоритет задачи", example = "HIGH")
-    private String priority;
+    private TaskPriority priority;
 
     @Schema(description = "Срок выполнения задачи")
     private LocalDateTime dueDate;

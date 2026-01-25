@@ -11,9 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
+public interface TaskRepository extends JpaRepository<Task, UUID>, JpaSpecificationExecutor<Task> {
 
     List<Task> findByAssigneeId(Long assigneeId);
 

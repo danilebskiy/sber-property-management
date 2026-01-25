@@ -4,11 +4,13 @@ import com.sberfintech.task.model.TaskPriority;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @Schema(description = "Запрос на создание задачи")
 public class CreateTaskRequest {
 

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class TaskDomainService {
     private final TaskSpecificationBuilder taskSpecificationBuilder;
 
 
-    public Task findById(Long id) {
+    public Task findById(UUID id) {
         return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
     }
 
@@ -75,7 +76,7 @@ public class TaskDomainService {
     }
 
     @Transactional
-    public Task assign(Long taskId, Long assigneeId) {
+    public Task assign(UUID taskId, Long assigneeId) {
         Task task = findById(taskId);
         taskValidator.validateAssignee(task, assigneeId);
         task.setAssigneeId(assigneeId);
@@ -84,7 +85,7 @@ public class TaskDomainService {
     }
 
     @Transactional
-    public Task start(Long taskId, Long userId) {
+    public Task start(UUID taskId, Long userId) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + taskId));
         taskValidator.validateForStart(task, userId);
         task.setStatus(TaskStatus.IN_PROGRESS);
@@ -92,7 +93,7 @@ public class TaskDomainService {
     }
 
     @Transactional
-    public Task complete(Long taskId, Long userId) {
+    public Task complete(UUID taskId, Long userId) {
         Task task = findById(taskId);
 
         if (!userId.equals(task.getAssigneeId())) {
@@ -105,7 +106,7 @@ public class TaskDomainService {
     }
 
     @Transactional
-    public Task escalate(Long taskId, Long escalatedTo) {
+    public Task escalate(UUID taskId, Long escalatedTo) {
         Task task = findById(taskId);
 
         taskValidator.validateEscalation(task, escalatedTo);
@@ -120,7 +121,7 @@ public class TaskDomainService {
     }
 
     @Transactional
-    public Task cancel(Long taskId, String reason) {
+    public Task cancel(UUID taskId, String reason) {
         Task task = findById(taskId);
 
         if (!canBeCancelled(task)){
@@ -140,7 +141,7 @@ public class TaskDomainService {
 
 
     @Transactional
-    public void delete(Long taskId) {
+    public void delete(UUID taskId) {
         Task task = findById(taskId);
 
         if (task.getStatus() != TaskStatus.CANCELED && task.getStatus() != TaskStatus.COMPLETED) {

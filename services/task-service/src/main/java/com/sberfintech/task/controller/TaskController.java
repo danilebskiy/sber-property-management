@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -51,7 +52,7 @@ public class TaskController {
             @ApiResponse(responseCode = "404", description = "Задача не найдена")
     })
     public TaskResponse getTaskById(@Parameter(description = "ID задачи", example = "1")
-                                    @PathVariable Long id) {
+                                    @PathVariable UUID id) {
 
         log.info("Получен запрос на получение задачи с ID {}", id);
         return taskService.getTaskById(id);
@@ -179,7 +180,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Задача успешно назначена")
     public TaskResponse assignTask(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id,
+            @PathVariable UUID id,
 
             @Parameter(description = "ID исполнителя", example = "2")
             @PathVariable Long assigneeId) {
@@ -193,7 +194,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Выполнение задачи начато")
     public TaskResponse startTask(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id,
+            @PathVariable UUID id,
 
             @Parameter(description = "ID пользователя", example = "2")
             @RequestParam Long userId) {
@@ -207,7 +208,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Задача успешно завершена")
     public TaskResponse completeTask(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id,
+            @PathVariable UUID id,
 
             @Parameter(description = "ID пользователя")
             @RequestParam Long userId) {
@@ -221,7 +222,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Задача успешно отменена")
     public TaskResponse cancelTask(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id,
+            @PathVariable UUID id,
 
             @Parameter(description = "Причина отмены", example = "Изменение планов")
             @RequestParam(required = false) String reason) {
@@ -235,7 +236,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Задача успешно эскалирована")
     public TaskResponse escalateTask(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id,
+            @PathVariable UUID id,
 
             @Parameter(description = "ID пользователя", example = "3")
             @RequestParam(required = false) Long escalatedTo) {
@@ -251,7 +252,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Задача успешно обновлена")
     public TaskResponse updateTask(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id,
+            @PathVariable UUID id,
 
             @Parameter(description = "Данные для обновления задачи")
             @Valid @RequestBody UpdateTaskRequest request) {
@@ -267,7 +268,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Приоритет успешно изменен")
     public TaskResponse updatePriority(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id,
+            @PathVariable UUID id,
 
             @Parameter(description = "Новый приоритет", example = "CRITICAL")
             @RequestParam String priority) {
@@ -281,7 +282,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "Срок выполнения успешно изменен")
     public TaskResponse updateDueDate(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id,
+            @PathVariable UUID id,
 
             @Parameter(description = "Новый срок выполнения", example = "2024-12-31T23:59:59")
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dueDate) {
@@ -298,7 +299,7 @@ public class TaskController {
     @ApiResponse(responseCode = "204", description = "Задача успешно удалена")
     public void deleteTask(
             @Parameter(description = "ID задачи", example = "1")
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
 
         log.info("Удаление задачи {}", id);
         taskService.deleteTask(id);

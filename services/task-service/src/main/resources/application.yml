@@ -9,7 +9,7 @@ spring:
 
   
   datasource:
-    url: jdbc:postgresql://localhost:5432/task_db?currentSchema=task_schema
+    url: jdbc:postgresql://localhost:5432/task_db
     username: ${TASK_DB_USER}
     password: ${TASK_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver

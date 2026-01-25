@@ -3,17 +3,22 @@ package com.sberfintech.task.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sberfintech.task.model.TaskPriority;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
+@Builder
 @Schema(description = "Ответ с информацией о задаче")
 public class TaskResponse {
 
     @Schema(description = "ID задачи", example = "1")
     private UUID id;
+
+    @Schema(description = "Название задачи")
+    private String title;
 
     @Schema(description = "Описание задачи")
     private String description;
@@ -38,6 +43,9 @@ public class TaskResponse {
 
     @Schema(description = "ID создателя", example = "1")
     private Long creatorId;
+
+    @Schema(description = "ID приемника")
+    private Long assigneeId;
 
     @Schema(description = "ID объекта недвижимости", example = "101")
     private Long propertyId;

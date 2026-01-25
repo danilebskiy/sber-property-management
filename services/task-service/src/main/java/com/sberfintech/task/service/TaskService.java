@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +36,7 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public TaskResponse getTaskById(Long Id) {
+    public TaskResponse getTaskById(UUID Id) {
         Task task = taskDomainService.findById(Id);
         return taskMapper.toResponse(task);
     }
@@ -98,7 +99,7 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskResponse updateTask(Long id, UpdateTaskRequest request) {
+    public TaskResponse updateTask(UUID id, UpdateTaskRequest request) {
         Task task = taskDomainService.findById(id);
         taskMapper.updateEntity(request, task);
         Task updatedTask = taskDomainService.update(task);
@@ -107,41 +108,41 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskResponse assignTask(Long taskId, Long assigneeId) {
+    public TaskResponse assignTask(UUID taskId, Long assigneeId) {
         Task task = taskDomainService.assign(taskId, assigneeId);
         taskEventService.sendTaskAssigned(task, assigneeId);
         return taskMapper.toResponse(task);
     }
 
     @Transactional
-    public TaskResponse startTask(Long taskId, Long userId) {
+    public TaskResponse startTask(UUID taskId, Long userId) {
         Task task = taskDomainService.start(taskId, userId);
         taskEventService.sendTaskStarted(task, userId);
         return taskMapper.toResponse(task);
     }
 
     @Transactional
-    public TaskResponse completeTask(Long taskId, Long userId) {
+    public TaskResponse completeTask(UUID taskId, Long userId) {
         Task task = taskDomainService.complete(taskId, userId);
         taskEventService.sendTaskCompleted(task, userId);
         return taskMapper.toResponse(task);
     }
 
     @Transactional
-    public TaskResponse cancelTask(Long taskId, String reason) {
+    public TaskResponse cancelTask(UUID taskId, String reason) {
         Task task = taskDomainService.cancel(taskId, reason);
         taskEventService.sendTaskCanceled(task, reason);
         return taskMapper.toResponse(task);
     }
     @Transactional
-    public TaskResponse escalateTask(Long taskId, Long escalatedTo) {
+    public TaskResponse escalateTask(UUID taskId, Long escalatedTo) {
         Task task = taskDomainService.escalate(taskId, escalatedTo);
         taskEventService.sendTaskEscalated(task, escalatedTo);
         return taskMapper.toResponse(task);
     }
 
     @Transactional
-    public TaskResponse updatePriority(Long taskId, String priority) {
+    public TaskResponse updatePriority(UUID taskId, String priority) {
         Task task = taskDomainService.findById(taskId);
         TaskPriority taskPriority = TaskPriority.valueOf(priority.toUpperCase());
         task.setPriority(taskPriority);
@@ -151,7 +152,7 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskResponse updateDueDate(Long taskId, LocalDateTime dueDate) {
+    public TaskResponse updateDueDate(UUID taskId, LocalDateTime dueDate) {
         Task task = taskDomainService.findById(taskId);
         task.setDueDate(dueDate);
         Task updatedTask = taskDomainService.update(task);
@@ -160,7 +161,7 @@ public class TaskService {
     }
 
     @Transactional
-    public void deleteTask(Long taskId) {
+    public void deleteTask(UUID taskId) {
         taskDomainService.delete(taskId);
         log.info("Deleted task with id: {}", taskId);
     }
