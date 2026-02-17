@@ -6,20 +6,23 @@ pipeline {
         jdk 'JDK-21'
     }
 
+    stage('Prepare JDK') {
+        steps {
+            script {
+                env.JAVA_HOME = tool name: 'JDK-21', type: 'jdk'
+                env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+            }
+            sh 'java -version'
+            sh 'javac -version'
+        }
+    }
+
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-    stage('Diagnostics') {
-        steps {
-            sh 'java -version'
-            sh 'javac -version'
-            sh 'echo $JAVA_HOME'
-            sh 'ls -la $JAVA_HOME/bin/javac'
-        }
-    }
 
         stage('Build') {
             steps {
