@@ -12,6 +12,14 @@ pipeline {
                 checkout scm
             }
         }
+    stage('Diagnostics') {
+        steps {
+            sh 'java -version'
+            sh 'javac -version'
+            sh 'echo $JAVA_HOME'
+            sh 'ls -la $JAVA_HOME/bin/javac'
+        }
+    }
 
         stage('Build') {
             steps {
