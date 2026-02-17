@@ -2,23 +2,22 @@ pipeline {
     agent any
 
     tools {
-       maven 'Maven-3.9.9'
+        maven 'Maven-3.9.9'
         jdk 'JDK-21'
     }
 
     stages {
-            stage('Prepare JDK') {
-                steps {
-                    script {
-                        env.JAVA_HOME = tool name: 'JDK-21', type: 'jdk'  // Исправлено: tool name:
-                        env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
-                    }
-                    sh 'java -version'
-                    sh 'javac -version'
+        stage('Prepare JDK') {
+            steps {
+                script {
+                    env.JAVA_HOME = tool name: 'JDK-21', type: 'jdk'
+                    env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
                 }
+                sh 'java -version'
+                sh 'javac -version'
             }
+        }
 
-    stages {
         stage('Checkout') {
             steps {
                 checkout scm
