@@ -6,16 +6,17 @@ pipeline {
         jdk 'JDK-21'
     }
 
-    stage('Prepare JDK') {
-        steps {
-            script {
-                env.JAVA_HOME = tool name: 'JDK-21', type: 'jdk'
-                env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+    stages {
+            stage('Prepare JDK') {
+                steps {
+                    script {
+                        env.JAVA_HOME = tool name: 'JDK-21', type: 'jdk'  // Исправлено: tool name:
+                        env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+                    }
+                    sh 'java -version'
+                    sh 'javac -version'
+                }
             }
-            sh 'java -version'
-            sh 'javac -version'
-        }
-    }
 
     stages {
         stage('Checkout') {
