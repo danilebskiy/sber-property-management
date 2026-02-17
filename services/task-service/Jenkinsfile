@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven-3.9.9'
+        jdk 'JDK-21'
+    }
+
+    stages {
+        stage('Prepare JDK') {
+            steps {
+                script {
+                    env.JAVA_HOME = tool name: 'JDK-21', type: 'jdk'
+                    env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+                }
+                sh 'java -version'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    def jdkHome = tool name: 'JDK-21', type: 'jdk'
+                    sh """
+                        export JAVA_HOME=${jdkHome}
+                        export PATH=${jdkHome}/bin:\$PATH
+                        mvn clean compile
+                    """
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    def jdkHome = tool name: 'JDK-21', type: 'jdk'
+                    sh """
+                        export JAVA_HOME=${jdkHome}
+                        export PATH=${jdkHome}/bin:\$PATH
+                        mvn test
+                    """
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                script {
+                    def jdkHome = tool name: 'JDK-21', type: 'jdk'
+                    sh """
+                        export JAVA_HOME=${jdkHome}
+                        export PATH=${jdkHome}/bin:\$PATH
+                        mvn package -DskipTests
+                    """
+                }
+                archiveArtifacts 'target/*.jar'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Сборка успешно завершена!'
+        }
+        failure {
+            echo '❌ Сборка завершилась с ошибкой'
+        }
+    }
+}
