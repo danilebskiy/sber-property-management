@@ -27,7 +27,16 @@ pipeline {
         stage('Build') {
             steps {
                 dir('services/task-service') {
-                    sh 'mvn clean compile'
+                    script {
+                        def jdkHome = tool name: 'JDK-21', type: 'jdk'
+                        sh """
+                            export JAVA_HOME=${jdkHome}
+                            export PATH=${jdkHome}/bin:\$PATH
+                            echo "JAVA_HOME: \$JAVA_HOME"
+                            java -version
+                            mvn clean compile
+                        """
+                    }
                 }
             }
         }
@@ -35,7 +44,14 @@ pipeline {
         stage('Test') {
             steps {
                 dir('services/task-service') {
-                    sh 'mvn test'
+                    script {
+                        def jdkHome = tool name: 'JDK-21', type: 'jdk'
+                        sh """
+                            export JAVA_HOME=${jdkHome}
+                            export PATH=${jdkHome}/bin:\$PATH
+                            mvn test
+                        """
+                    }
                 }
             }
         }
@@ -43,7 +59,14 @@ pipeline {
         stage('Package') {
             steps {
                 dir('services/task-service') {
-                    sh 'mvn package -DskipTests'
+                    script {
+                        def jdkHome = tool name: 'JDK-21', type: 'jdk'
+                        sh """
+                            export JAVA_HOME=${jdkHome}
+                            export PATH=${jdkHome}/bin:\$PATH
+                            mvn package -DskipTests
+                        """
+                    }
                     archiveArtifacts 'target/*.jar'
                 }
             }
