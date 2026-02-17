@@ -9,17 +9,18 @@ pipeline {
     stages {
         stage('List Tools') {
             steps {
-                sh 'ls -la /var/jenkins_home/tools/hudson.model.JDK/ || echo "No JDKs found"'
+                bat 'dir C:\\tools\\ || echo No tools found'
             }
         }
+
         stage('Prepare JDK') {
             steps {
                 script {
                     env.JAVA_HOME = tool name: 'JDK-21', type: 'jdk'
-                    env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+                    env.PATH = "${env.JAVA_HOME}\\bin;${env.PATH}"
                 }
-                sh 'java -version'
-                sh 'javac -version'
+                bat 'java -version'
+                bat 'javac -version'
             }
         }
 
@@ -34,10 +35,10 @@ pipeline {
                 dir('services/task-service') {
                     script {
                         def jdkHome = tool name: 'JDK-21', type: 'jdk'
-                        sh """
-                            export JAVA_HOME=${jdkHome}
-                            export PATH=${jdkHome}/bin:\$PATH
-                            echo "JAVA_HOME: \$JAVA_HOME"
+                        bat """
+                            set JAVA_HOME=${jdkHome}
+                            set PATH=${jdkHome}\\bin;%PATH%
+                            echo JAVA_HOME=%JAVA_HOME%
                             java -version
                             mvn clean compile
                         """
@@ -51,9 +52,9 @@ pipeline {
                 dir('services/task-service') {
                     script {
                         def jdkHome = tool name: 'JDK-21', type: 'jdk'
-                        sh """
-                            export JAVA_HOME=${jdkHome}
-                            export PATH=${jdkHome}/bin:\$PATH
+                        bat """
+                            set JAVA_HOME=${jdkHome}
+                            set PATH=${jdkHome}\\bin;%PATH%
                             mvn test
                         """
                     }
@@ -66,9 +67,9 @@ pipeline {
                 dir('services/task-service') {
                     script {
                         def jdkHome = tool name: 'JDK-21', type: 'jdk'
-                        sh """
-                            export JAVA_HOME=${jdkHome}
-                            export PATH=${jdkHome}/bin:\$PATH
+                        bat """
+                            set JAVA_HOME=${jdkHome}
+                            set PATH=${jdkHome}\\bin;%PATH%
                             mvn package -DskipTests
                         """
                     }
