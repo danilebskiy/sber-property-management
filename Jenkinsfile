@@ -7,6 +7,11 @@ pipeline {
     }
 
     stages {
+        stage('List Tools') {
+            steps {
+                sh 'ls -la /var/jenkins_home/tools/hudson.model.JDK/ || echo "No JDKs found"'
+            }
+        }
         stage('Prepare JDK') {
             steps {
                 script {
